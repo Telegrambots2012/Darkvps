@@ -585,9 +585,8 @@ async def verify_user_channels(update, context, user_id):
             await send_channel_verification_message(update, context, user_id)
             return False
     except Exception as e:
-            logging.error(f"Error in verify_user_channels: {e}")
-        return False
-
+    logging.error(f"Error in verify_user_channels: {e}")
+    return False
 async def send_channel_verification_message(update, context, user_id):
     """Send channel join verification message"""
     try:
