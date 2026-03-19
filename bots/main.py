@@ -1,7 +1,7 @@
 
 # -*- coding: utf-8 -*-
 """
-By @Darkeyy0
+By @OFFline_X_Boy
 Universal File Hosting Bot
 Enhanced file hosting system supporting 30+ file types with secure execution
 """
@@ -104,11 +104,11 @@ def keep_alive():
     print("🌐 Flask Keep-Alive server started.")
 
 # --- Configuration ---
-TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', '8645017105:AAEU-fmfWnlb28syHqluYSQ9XAINyj3POw4M')
-OWNER_ID = int(os.getenv('OWNER_ID', '5464634575'))
-ADMIN_ID = int(os.getenv('ADMIN_ID', '54646345759'))
-YOUR_USERNAME = os.getenv('BOT_USERNAME', '@Darkeyy0')
-UPDATE_CHANNEL = os.getenv('UPDATE_CHANNEL', 'https://t.me/+P8G7AqQFn1ZiNjk1')
+TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', '8363070477:AAHxCsJOf9R6Jbev56Rz7eAg77n2ARF1DPE')
+OWNER_ID = int(os.getenv('OWNER_ID', '7080075962'))
+ADMIN_ID = int(os.getenv('ADMIN_ID', '7080075962'))
+YOUR_USERNAME = os.getenv('BOT_USERNAME', '@Hostingxpremium_bot')
+UPDATE_CHANNEL = os.getenv('UPDATE_CHANNEL', 'https://t.me/+YWZcc-ecD9k1MTM1')
 
 # Enhanced folder setup
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
