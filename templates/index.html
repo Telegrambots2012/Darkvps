@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dark VPS</title>
+
+<style>
+body {
+    margin:0;
+    height:100vh;
+    background:#000;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:monospace;
+}
+
+.window {
+    width:95%;
+    height:90%;
+    background:#000;
+    border-radius:8px;
+    box-shadow:0 0 25px #00ff9f33;
+    display:flex;
+    flex-direction:column;
+}
+
+.title {
+    padding:8px;
+    background:#111;
+    color:#aaa;
+}
+
+#terminal {
+    flex:1;
+    padding:10px;
+    overflow-y:auto;
+    color:white;
+}
+
+.line {
+    display:flex;
+}
+
+.prompt {
+    color:#00ff9f;
+}
+
+.input {
+    background:none;
+    border:none;
+    color:white;
+    outline:none;
+    flex:1;
+}
+
+.dir {
+    color:#4da6ff;
+}
+</style>
+</head>
+
+<body>
+
+<div class="window">
+<div class="title">owner@Darkeyy0: ~</div>
+<div id="terminal"></div>
+</div>
+
+<script>
+const terminal = document.getElementById("terminal");
+let currentPath="~";
+
+function focusInput(input){
+    setTimeout(()=>{
+        input.focus();
+        input.click();
+    },50);
+}
+
+function newLine(){
+    const line=document.createElement("div");
+    line.className="line";
+
+    const prompt=document.createElement("span");
+    prompt.className="prompt";
+    prompt.innerText=`Dark@Vps:${currentPath}$ `;
+
+    const input=document.createElement("input");
+    input.className="input";
+
+    line.appendChild(prompt);
+    line.appendChild(input);
+    terminal.appendChild(line);
+
+    focusInput(input);
+
+    input.addEventListener("keydown",async function(e){
+        if(e.key==="Enter"){
+            const cmd=input.value.trim();
+            input.disabled=true;
+
+            const res=await fetch("/run",{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/x-www-form-urlencoded"
+                },
+                body:"command="+encodeURIComponent(cmd)
+            });
+
+            const text=await res.text();
+
+            if(text==="__CLEAR__"){
+                terminal.innerHTML="";
+                newLine();
+                return;
+            }
+
+            // update path
+            if(cmd.startsWith("cd ") && text==="OK"){
+                const folder=cmd.split(" ")[1];
+                currentPath="~/"+folder;
+            }
+
+            // open html
+            if(text.startsWith("http://")){
+                window.open(text,"_blank");
+                newLine();
+                return;
+            }
+
+            const out=document.createElement("div");
+
+            if(text){
+                if(text.includes("[DIR]")){
+                    let lines=text.split("\n");
+                    out.innerHTML=lines.map(l=>{
+                        if(l.startsWith("[DIR]")){
+                            return `<span class="dir">${l.replace("[DIR]","")}</span>`;
+                        }
+                        return l;
+                    }).join("<br>");
+                } else {
+                    out.innerText=text;
+                }
+
+                terminal.appendChild(out);
+            }
+
+            newLine();
+            terminal.scrollTop=terminal.scrollHeight;
+        }
+    });
+}
+
+newLine();
+</script>
+
+</body>
+</html>
